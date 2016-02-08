@@ -1,0 +1,26 @@
+# Hackers Challenge crontab file
+# Formatted (with username) for /etc/cron.d
+# install: ln -s /opt/hacrep/conf/hc-cron /etc/cron.d
+
+# m h dom mon dow user command
+* * * * * root /opt/hacrep/bin/gamecron
+
+# Sun-rise from 7-7:59 AM MDT (in UTC)
+* 13 * * * root /opt/hacrep/bin/sun-background rise > /opt/hacrep/www/css/night.css
+
+# Sun-set from 7-7:59 PM MDT (in UTC)
+* 1 * * * root /opt/hacrep/bin/sun-background set > /opt/hacrep/www/css/night.css
+
+# Hourly Videos
+0 2 * * * root /opt/hacrep/bin/video-afterdark video-11
+0 3 * * * root /opt/hacrep/bin/video-afterdark video-10
+0 4 * * * root /opt/hacrep/bin/video-afterdark video-9
+0 5 * * * root /opt/hacrep/bin/video-afterdark video-1
+0 6 * * * root /opt/hacrep/bin/video-afterdark video-2
+0 7 * * * root /opt/hacrep/bin/video-afterdark video-3
+0 8 * * * root /opt/hacrep/bin/video-afterdark video-4
+0 9 * * * root /opt/hacrep/bin/video-afterdark video-5
+0 10 * * * root /opt/hacrep/bin/video-afterdark video-6
+0 11 * * * root /opt/hacrep/bin/video-afterdark video-7
+0 12 * * * root /opt/hacrep/bin/video-afterdark video-8
+0 13 * * * root /opt/hacrep/bin/video-afterdark video-reset

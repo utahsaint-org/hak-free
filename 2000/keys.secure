@@ -1,0 +1,83 @@
+##
+## ===================================================
+##
+BL100-Download100	-100	BLTEST100	10
+BL200-Download200	200	BLTEST200	10
+BL300-Download300	300	BLTEST300	10
+BL400-Download400	400	BLTEST400	10
+BL500-Download500	500	BLTEST500	10
+BL600-Download600	600	BLTEST600	10
+BL700-Download700	700	BLTEST700	10
+##
+## ===================================================
+##
+PT100-Download100	100	PTTEST100	10
+PT200-Download200	200	PTTEST200	10
+PT300-Download300	300	PTTEST300	10
+PT400-Download400	400	PTTEST400	10
+PT500-Download500	500	PTTEST500	10
+PT600-Download600	600	PTTEST600	10
+PT700-Download700	700	PTTEST700	10
+##
+## ===================================================
+##
+PM100-Download100	100	PMTEST100	10
+PM200-Download200	200	PMTEST200	10
+PM300-Download300	300	PMTEST300	10
+PM400-Download400	400	PMTEST400	10
+PM500-Download500	500	PMTEST500	10
+PM600-Download600	600	PMTEST600	10
+PM700-Download700	700	PMTEST700	10
+##
+## ===================================================
+##
+PP100-Download100	100	PPTEST100	10
+PP200-Download200	200	PPTEST200	10
+PP300-Download300	300	PPTEST300	10
+PP400-Download400	400	PPTEST400	10
+PP500-Download500	500	PPTEST500	10
+PP600-Download600	600	PPTEST600	10
+PP700-Download700	700	PPTEST700	10
+##
+## ===================================================
+##
+CM100-Download100	100	CMTEST100	10
+CM200-Download200	200	CMTEST200	10
+CM300-Download300	300	CMTEST300	10
+CM400-Download400	400	CMTEST400	10
+CM500-Download500	500	CMTEST500	10
+CM600-Download600	600	CMTEST600	10
+CM700-Download700	700	CMTEST700	10
+##
+## ===================================================
+##
+GB100-Download100	100	GBTEST100	10
+GB200-Download200	200	GBTEST200	10
+GB300-Download300	300	GBTEST300	10
+GB400-Download400	400	GBTEST400	10
+GB500-Download500	500	GBTEST500	10
+GB600-Download600	600	GBTEST600	10
+GB700-Download700	700	GBTEST700	10
+##
+## ===================================================
+##
+3D100-Download100	100	3DTEST100	10
+3D200-Download200	200	3DTEST200	10
+3D300-Download300	300	3DTEST300	10
+3D400-Download400	400	3DTEST400	10
+3D500-Download500	500	3DTEST500	10
+3D600-Download600	600	3DTEST600	10
+3D700-Download700	700	3DTEST700	10
+##
+## ===================================================
+##
+NF100-Download100	100	NFTEST100	10
+NF200-Download200	200	NFTEST200	10
+NF300-Download300	300	NFTEST300	10
+NF400-Download400	400	NFTEST400	10
+NF500-Download500	500	NFTEST500	10
+NF600-Download600	600	NFTEST600	10
+NF700-Download700	700	NFTEST700	10
+##
+## ===================================================
+##

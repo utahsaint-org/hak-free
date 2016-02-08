@@ -1,0 +1,84 @@
+#register	{
+	width: 344px;
+	height: 586px;
+	margin-top: 25px;
+	margin-left: auto;
+	margin-right: auto;
+	background-image: url('/images/register.png');
+	}
+
+#registerform	{
+	position: absolute;
+	top: 310px;
+	left: 50%;
+	margin-left: -130px;
+	width: 260px;
+	text-align: center;
+	}
+
+#registerform input	{
+	background-color: #202020;
+	color: #ccc;
+	padding: 6px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	border-bottom: 1px solid #999;
+	border-right: 1px solid #999;
+	border-top: 1px solid #555;
+	border-left: 1px solid #555;
+	margin-bottom: 10px;
+	font-family: helvetica;
+	font-size: 15pt;
+	}
+
+#registerform div.UserID	{
+	width: 100%;
+	margin-top: 30px;
+	font-family: "Andale Mono", courier;
+	font-size: 11px;
+	color: #66F;
+	background: #000;
+	border-radius: 5px;
+	padding: 4px;
+	text-align: center;
+	}
+
+#registerform p	{
+	font-family: helvetica;
+	font-size: 10px;
+	font-weight: bold;
+	margin-bottom: 4px;
+	}
+
+#registerform .error	{
+	border: 2px solid #f00;
+	}
+
+.mtop	{
+	margin-top: 25px;
+	}
+
+#NavBar {
+        position: absolute;
+        top: 130px;
+        margin-left: -140px;
+        width: 100px;
+        color: #ccc;
+        left: 50%;
+        }
+
+#NavBar a       {
+        color: #ccc;
+        font-family: helvetica;
+        font-size: 11px;
+        font-weight: bold;
+        text-shadow: #000 1px 1px 1px;
+        text-decoration: none;
+        margin-right: 130px;
+        }
+
+#NavBar a:hover {
+        color: #f90;
+        }
+
+

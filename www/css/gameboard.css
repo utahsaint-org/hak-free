@@ -1,0 +1,58 @@
+#red	{
+	}
+
+#red h1	{
+	color: #fff;
+	font-family: helvetica;
+	font-size: 36px;
+	font-weight: bold;
+	margin-top: 10px;
+	}
+
+.cntrtable	{
+	margin-left: auto;
+	margin-right: auto;
+	}
+
+#GameBoard	{
+	margin-top: 10px;
+	margin-left: auto;
+	margin-right: auto;
+	}
+
+#GameBoard td	{
+	padding-top: 5px;
+	padding: 5px;
+	}
+
+#Puzzles	{
+	position: absolute;
+	top: 150px;
+	left: 50%;
+	margin-left: -358px;
+	width: 720px;
+	text-align: center;
+	}
+
+#NavBar	{
+	text-align: center;
+	width: 300px;
+	left: 50%;
+	margin-left: -150px;
+	position: absolute;
+	top: 18px;
+	color: #ccc;
+	}
+
+#NavBar a	{
+	color: #fff;
+	font-family: helvetica;
+	font-size: 18px;
+	font-weight: bold;
+	text-decoration: none;
+	margin-right: 10px;
+	}
+
+#NavBar a:hover	{
+	color: #000;
+	}

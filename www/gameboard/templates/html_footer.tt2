@@ -1,0 +1,25 @@
+
+[% # Pass in minified => 1 to use minified versions of files
+    min = '.min' IF minified
+%]
+
+[% jquery_version = '1.3.2' %]
+[% FOREACH file IN js %]
+  [% IF file.jquery %]
+<script type="text/javascript" language="javascript" src="js/jquery-[% jquery_version %][% min %].js"></script>
+    [% IF file.jquery %]
+      [% FOREACH library IN file.jquery %]
+<script type="text/javascript" language="javascript" src="js/jquery.[% library %][% min %].js"></script>
+      [% END %]
+    [% END %]
+  [% ELSE %]
+<script type="text/javascript" language="javascript" src="js/[% file %][% min %].js"></script>
+  [% END %]
+[% END %]
+
+[% # Page-end Javascript
+   IF content %]
+<script type="text/javascript" language="javascript">
+[% content %]
+</script>
+[% END %]

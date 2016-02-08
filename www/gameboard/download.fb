@@ -1,0 +1,49 @@
+#!/usr/bin/perl -T
+
+use common::sense;
+use CGI;
+use FindBin::libs;
+use Puzzles;
+
+my $db = Puzzles->db;
+
+my $cg = CGI->new;
+
+my $cat_level = (($cg->param)[0] eq 'keywords' ? $cg->param('keywords') : $cg->param)[0];
+
+my ($cat, $level) = $cat_level =~ /^([A-Z]{2})(\d+)/;
+
+my ($max_solved) = $db->iquery(
+    'SELECT puzzle FROM solve',
+    "WHERE puzzle LIKE '$cat%' AND puzzle NOT LIKE 'EXTRA%'",
+    'ORDER BY puzzle DESC LIMIT 1'
+)->flat;
+my ($max_level) = $max_solved =~ /^\D{2}(\d+)/;
+
+my %puzzles = Puzzles->all;
+my $puzzle = $puzzles{$cat}{$level}{puzzle};
+my $zip_file = Puzzles->zip_file($puzzle);
+
+unless (
+       $puzzle
+    && $cat
+    && $level
+    && (   $level == 100
+        || $max_solved && $max_level && $level <= $max_level + 100)
+    && $zip_file
+  ) {
+    print $cg->header;
+    exit;
+}
+
+my $zip_full = Puzzles->zip_full($puzzle);
+print $cg->header(
+    -type           => 'application/zip',
+    -attachment     => $zip_file,
+    -Content-Length => -s "$zip_full",
+);
+open my $file, "< $zip_full";
+while (<$file>) {
+    print;
+}
+close $file;

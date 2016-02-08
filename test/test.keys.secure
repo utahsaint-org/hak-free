@@ -1,0 +1,16 @@
+# Test KEYS.SECURE file for Hackers Challenge
+
+# FILE FORMAT
+# Puzzle name<space>points<space>key<space>first solver extra points
+# No fields can have spaces
+# Puzzle must be in format CCPPP-Name, where CC is category, PPP is points level, and Name is the puzzle name
+# Puzzles names ending in "EXTRA" do not trigger the next level to be available
+PRE-IDidAPresentation	300	ThisIsAllIGot	0
+# Comment
+BL100-Downloadze	100	"a3ee5e6bda390709bfef4b0dafd8956032551890","1234"
+# Comment
+PT200-Downloadsx	200	/Its(the)?oneyou(donot|don't)seethatcounts?.?/	10
+# Comment
+CM300-Downloadcc	300	[TheDvorakCryptoIsNotRealCrypto]	10
+# Comment
+CM300-DownloadccEXTRA	300	ExtraKey

@@ -1,0 +1,56 @@
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Hackers Challenge 2013 - UtahSAINT Organization</title>
+
+                <link rel="stylesheet" type="text/css" href="/css/reset-min.css" />
+                <link rel="stylesheet" type="text/css" href="/css/night.css" />
+                <link rel="stylesheet" type="text/css" href="/css/global.css" />
+                <link rel="stylesheet" type="text/css" href="/css/submit.css" />
+
+</head>
+
+<body id="main">
+
+<div id=submit>
+<div id=submitform>
+  <form method=post action=index.cgi>
+	<p>User ID</p>
+    <input type=text name=UserKey defaultvalue="User Key" class="UserID [%IF status.invalid_user %]error[% END %]" value="[% user_key %]" size=34 />
+    <br />
+	<p>Captured Key</p>
+    <input type=text name=CaptureKey defaultvalue="Captured Key" class="UserID [% IF status.invalid_key %]error[% END %][% IF status.solved %]clear_after_conf[% END %]" value="[% capture_key %]" size=34 />
+    <br />
+    <br />
+    <input type=submit name=Submit value="SUBMIT KEY" />
+
+[% IF status.score %]
+	<div id=myscore>
+	<p>Your Current Score: [% status.score %] points</p>
+	</div>
+[% END %]
+
+  </form>
+</div>
+</div>
+<div id=NavBar>
+        <NOBR><a href=/gameboard/>GAMEBOARD</a><a href=/scoreboard/>SCOREBOARD</a></NOBR>
+</div>
+
+[% IF status.solved %]
+<div class=status><img src=images/check.png class="check conf_image" /></div>
+[% END %]
+[% IF status.error %]
+<div class=status><img src=images/ninja.png class="ninja conf_image" /></div>
+[% END %]
+
+
+[% WRAPPER html_footer.tt2
+   js = [ { jquery => [] }, 'puzzle' ],
+   minified = 1,
+%]
+[% END %]
+
+[% INCLUDE footer.tt2 %]
+
+</body>
+</html>

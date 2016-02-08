@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+
+use common::sense;
+use Date::Parse;
+use FindBin::libs;
+use Puzzles;
+
+my $db = Puzzles->db;
+
+# Quit if game is closed
+exit 0 if ($db->iquery('SELECT v from kv WHERE', { k => 'levels'})->flat)[0] eq 'none';
+
+# Prevent any new solves
+Puzzles->get_solve_lock;
+
+my %puzzles = Puzzles->all;
+my $time = time();
+for my $solved ($db->iquery('SELECT * from solve GROUP BY puzzle HAVING COUNT(*) = 1')->hashes) {
+    my $puzzle = $puzzles{$solved->{puzzle}};
+    next unless $puzzle->{points}; # Only give extra points if the original puzzle had points
+
+    my $elapsed = int(($time - str2time($solved->{solvetime})) / 3600); # Hours since solved
+    my $bonuses = $solved->{bonuses} || ',';
+
+    my $points = $solved->{points};
+    if ($elapsed < 1) {
+	next;
+    }
+    my $bonus_points;
+    if ($elapsed >= 1 && $elapsed < 2) { # 10% if still unsolved after an hour
+	$bonus_points = int($puzzle->{points} * .10) || 1;
+    } elsif ($elapsed >= 2 && $elapsed < 4) { # 5% each hour if unsolved from 2 to 4 hours
+	$bonus_points = int($puzzle->{points} * .05) || 1;
+    } elsif ($elapsed >= 4) { # 1% each hour afterwards
+	$bonus_points = int($puzzle->{points} * .01) || 1;
+    }
+
+    if ($bonuses !~ /,$elapsed,/) {
+	$db->iquery('UPDATE solve SET ',
+		   { points => $solved->{points} + $bonus_points,
+		     bonuses => $bonuses . "$elapsed," },
+		   'WHERE ', { puzzle => $solved->{puzzle},
+			       uuid => $solved->{uuid} });
+    }
+}
+Puzzles->release_solve_lock;

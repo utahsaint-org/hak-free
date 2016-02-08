@@ -1,0 +1,209 @@
+#!/usr/bin/perl
+
+use common::sense;
+use FindBin::libs;
+use Puzzles;
+use Getopt::Long;
+
+my $args = usage();
+my $db = Puzzles->db;
+if ($args->{scores}) {
+    my @scores = Puzzles->scores(-array => 1);
+    print_cols([["Handle", "Email", "Score"],
+		["---------------", "--------------------", "------"]],
+	       \@scores);
+    exit;
+}
+if ($args->{first}) {
+    my @puzzles = $db->iquery("SELECT uuid, puzzle, solvetime FROM",
+			      "(SELECT uuid, puzzle, solvetime FROM solve ORDER BY solvetime) a",
+			      "GROUP BY puzzle")->arrays;
+    my %users = $db->query("SELECT uuid, name, email FROM hacker")->map_hashes('uuid');
+    for my $puzzle (@puzzles) {
+	my $uuid = shift @$puzzle;
+	unshift @$puzzle, $users{$uuid}->{name}, $users{$uuid}->{email};
+    }
+    print_cols([["Handle", "Email", "Puzzle", "Solve Time"],
+		["---------------", "--------------------",
+		 "------------", "-------------------"]],
+	       \@puzzles);
+}
+if ($args->{solved}) {
+    my %puzzles = Puzzles->all;
+    
+    for my $puzzle ($db->iquery("SELECT puzzle, COUNT(*) AS count FROM solve",
+				"GROUP BY puzzle")->hashes) {
+	$puzzles{$puzzle->{puzzle}}->{count} = $puzzle->{count};
+    }
+
+    if (%puzzles) {
+	my @lines;
+	for my $puzzle (keys %puzzles) {
+	    push @lines, [$puzzle, $puzzles{$puzzle}->{points} || 0, $puzzles{$puzzle}->{count} || 0];
+	}
+
+	print_cols([["Puzzle", "Points", "Solves"],
+		    ["------------", "------", "------"]],
+		   \@lines);
+    }
+    exit;
+}
+if ((my $name = $args->{solved_name}) || (my $uuid = $args->{solved_uuid})) {
+    my %puzzles = Puzzles->all;
+    
+    ($uuid) = $db->iquery("SELECT uuid FROM hacker WHERE", {name => $name})->flat unless $uuid;
+    unless ($uuid) {
+	print "Cannot find user named '$name'\n" if $name && !$uuid;
+	exit;
+    }
+
+    for my $puzzle ($db->iquery("SELECT puzzle, COUNT(*) AS count FROM solve",
+				'WHERE', {uuid => $uuid},
+				"GROUP BY puzzle")->hashes) {
+	$puzzles{$puzzle->{puzzle}}->{count} = $puzzle->{count};
+    }
+
+    if (grep { $_+0 } map { $puzzles{$_}->{count} } keys %puzzles) {
+	my @lines;
+	for my $puzzle (keys %puzzles) {
+	    push @lines, [$puzzle, $puzzles{$puzzle}->{points} || 0, $puzzles{$puzzle}->{count} || 0];
+	}
+
+	print_cols([["Puzzle", "Points", "Solves"],
+		    ["------------", "------", "------"]],
+		   \@lines);
+    } else {
+	print "No scores found for UUID '$uuid'\n";
+    }
+    exit;
+}
+if ($args->{'clear-all'}
+    && confirm(' you want to delete all USERS and SCORES')) {
+    $db->query("TRUNCATE hacker");
+    $db->query("TRUNCATE solve");
+    $db->query("TRUNCATE attempt");
+    print "All users and scores deleted\n";
+}
+if ($args->{'clear-scores'} && confirm(' you want to delete all SCORES')) {
+    $db->query("TRUNCATE solve");
+    $db->query("TRUNCATE attempt");
+    print "All scores deleted\n";
+}
+if ($args->{'close-all-levels'}) {
+    $db->iquery("DELETE FROM kv WHERE", { k => 'levels' });
+    $db->iquery("INSERT INTO kv", { k => 'levels', v => 'none' });
+    print "All levels closed\n";
+}
+if ($args->{'open-first-level'}) {
+    $db->iquery("DELETE FROM kv WHERE", { k => 'levels' });
+    print "First level opened\n";
+}
+if ($args->{'reopen'}) {
+    $db->iquery("DELETE FROM kv WHERE", { k => 'levels' });
+    print "Board re-opened\n";
+}
+if ($args->{'open-all-levels'}) {
+    $db->iquery("DELETE FROM kv WHERE", { k => 'levels' });
+    $db->iquery("INSERT INTO kv", { k => 'levels', v => 'all' });
+    print "All levels opened\n";
+}
+
+sub confirm {
+    my $msg = shift;
+    print "Are you sure$msg? (y/N) ";
+    return <STDIN> =~ /^\s*y/i ? 1 : 0;
+}
+
+sub usage {
+  my $args = {};
+  GetOptions($args, 
+	     'clear-all',
+	     'clear-scores',
+	     'open-all-levels',
+	     'close-all-levels',
+	     'open-first-level',
+	     'first',
+	     'scores',
+	     'solved',
+	     'reopen',
+	     'solved_name=s',
+	     'solved_uuid=s',
+	     'k=i',
+      );
+
+  unless (%$args) {
+    print "Usage: admin [param] ([param] ...)\n";
+    print " -scores: Show current scores\n";
+    print " -solved: Show total solved counts for all puzzles\n";
+    print " -solved_name <name>: Show solved puzzles for a specific username\n";
+    print " -solved_uuid <uuid>: Show solved puzzles for a specific uuid\n";
+    print " -first: Show who finished each level first\n";
+    print " -clear-all: Delete all registered users and scores\n";
+    print " -clear-scores: Clear all scores\n";
+    print " -close-all-levels: Prevent any levels from being played\n";
+    print " -reopen: Turns the game back on in the state it was before being closed\b";
+    print " -open-first-level: Open first level for play\n";
+    print " -open-all-levels: Allow all levels to be played\n";
+    print " -k <#>: Sort by column # (-# for descending)\n\n";
+    exit;
+  }
+  return $args;
+}
+
+sub print_cols {
+    my ($headers, $rows) = @_;
+
+    my @max;
+    for my $row (@$headers, @$rows) {
+	for (@$row) {
+	    $_ = '' unless defined($_) && length($_);
+	    $_ =~ s/^\s*//;
+	    $_ =~ s/\s*$//;
+	}
+	for (0..$#$row) {
+	    if ($max[$_]) {
+		$max[$_] = length($row->[$_]) if length($row->[$_]) > $max[$_];
+	    } else {
+		$max[$_] = length($row->[$_]);
+	    }
+	}
+    }
+    $max[$_] = $max[$_] > 25 ? 25 : $max[$_] for (0..$#max);
+
+    my @alpha;
+    for my $row (@$rows) {
+	for (0..$#$row) {
+	    $alpha[$_] = 1 if $row->[$_] =~ /\D/o || $row->[$_] !~ /\d/o;
+	}
+    }
+
+    my ($h_format, $r_format);
+    $h_format = join("   ", map { "%-${_}s" } @max) . "\n";
+    $r_format = join("   ", map { '%' . ($alpha[$_] ? '-' : '') . "$max[$_].$max[$_]s" }
+		     0..$#max) . "\n";
+
+    for (@$headers) {
+	printf($h_format, @$_);
+    }
+
+    my $sort = abs($args->{k} || 1);
+    $sort--;
+    $sort = 0 if $sort < 0;
+    $sort = $#max if $sort > $#max;
+
+    my @sorted;
+    if ($args->{k} && $args->{k} < 0) {
+	@sorted = sort { $alpha[$sort] ?
+			     lc($b->[$sort]) cmp lc($a->[$sort])
+			     : $b->[$sort] <=> $a->[$sort] }
+	@$rows;
+    } else {
+	@sorted = sort { $alpha[$sort] ?
+			     lc($a->[$sort]) cmp lc($b->[$sort])
+			     : $a->[$sort] <=> $b->[$sort] }
+	@$rows;
+    }
+    for (@sorted) {
+	printf($r_format, @$_);
+    }
+}

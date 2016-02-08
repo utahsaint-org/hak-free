@@ -1,0 +1,21 @@
+body	{
+	}
+
+#footer	{
+	width: 400px;
+	margin-left: -216px;
+	left: 50%;
+	position: absolute;
+	bottom: 0px;
+	padding: 16px;
+	color: #ccc;
+	text-align: center;
+	font-family: helvetica;
+	font-size: 11px;
+	text-shadow: #000 1px 1px 1px;
+	}
+#footer p.title	{
+	text-transform: uppercase;
+	font-weight: bold;
+	letter-spacing: 7px;
+	}

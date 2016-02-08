@@ -1,0 +1,45 @@
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Hackers Challenge 2013 - UtahSAINT Organization</title>
+
+		<link rel="stylesheet" type="text/css" href="/css/reset-min.css" />
+		<link rel="stylesheet" type="text/css" href="/css/night.css" />
+		<link rel="stylesheet" type="text/css" href="/css/global.css" />
+		<link rel="stylesheet" type="text/css" href="/css/register.css" />
+	
+</head>
+
+<body id="main">
+
+
+
+<div id=register>&nbsp;
+</div>
+
+<div id=registerform>
+  <form method=post>
+[% IF uuid %]
+<p class=mtop>Your USERID Necessary to Submit Keys<br />COPY/PASTE this ID</p>
+<div class=UserID>[% uuid %]</div>
+[% ELSE %]
+    <p>Desired Handle</p>
+    <input type=text name=Name defaultvalue="Handle" class="[% IF error.name %]error[% END %]" value="[% name %]" size=18 />
+    <br />
+    <p>Email Address</p>
+    <input type=text name=Email defaultvalue="Email Address" class="[% IF error.email %]error[% END %]" value="[% email %]" size=18 />
+    <br />
+    <br />
+    <input type=submit name=Submit value="Register" />
+[% END %]
+  </form>
+</div>
+
+<div id=NavBar>
+        <NOBR><a href=/gameboard/>GAMEBOARD</a><a href=/submit/>SUBMIT KEYS</a></NOBR>
+</div>
+
+[% INCLUDE footer.tt2 %]
+
+</body>
+
+</html>

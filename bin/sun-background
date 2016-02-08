@@ -1,0 +1,14 @@
+#!/usr/bin/perl
+
+my $action = $ARGV[0];
+my $min = $ARGV[1] || (localtime)[1];
+my $val;
+
+if ($action eq 'set') {
+    $val = int(221 / 60 * (60 - $min - 1));
+} elsif ($action eq 'rise') {
+    $val = int(221 / 60 * ($min + 1));
+}
+
+my $hval = sprintf("%2.2X0000", $val);
+print "body { background-color: #${hval}; }\n";

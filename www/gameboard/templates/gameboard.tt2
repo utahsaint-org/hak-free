@@ -1,0 +1,59 @@
+<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Hackers Challenge 2013 - UtahSAINT Organization</title>
+
+                <link rel="stylesheet" type="text/css" href="/css/reset-min.css" />
+                <link rel="stylesheet" type="text/css" href="/css/night.css" />
+                <link rel="stylesheet" type="text/css" href="/css/global.css" />
+                <link rel="stylesheet" type="text/css" href="/css/gameboard.css" />
+
+</head>
+
+<body id=red>
+<div style="text-align:center; margin-top: 45px;">
+	<img src=/images/sc.png width=700px>
+	<h1>HACKERS CHALLENGE 2013 GAMEBOARD</h1>
+</div>
+
+[% INCLUDE video.tt2 %]
+
+<div id=GameBoard>
+<div>
+
+<table class=cntrtable cellpadding=10 cellspacing=10>
+[% FOREACH row IN board %]
+<tr valign="bottom">
+  [% FOREACH element IN row %]
+    <td align=center>
+    [% IF element.file %]
+      <a href="download.fb?[% element.file %]" target="download" border=0>
+    [% END %]
+    [% IF element.image %]
+        <img src="images/gameboard/[% element.image %]" [% IF element.file %]class="download"[% END %]>
+    [% END %]
+    [% IF element.file %]
+      </a>
+    [% END %]
+    </td>
+  [% END %]
+</tr>
+[% END %]
+</table>
+
+</div>
+</div>
+
+<div id=NavBar>
+	<NOBR><a href=/register/>REGISTER</a><a href=/submit/>SUBMIT KEYS</a><a href=/scoreboard/>SCOREBOARD</a><a href=/hints/>HINTS</a></NOBR>
+</div>
+
+<iframe name="download" style="display:none"></iframe>
+
+[% WRAPPER html_footer.tt2
+   js = [ { jquery => [] }, 'gameboard' ],
+   minified = 1,
+%]
+[% END %]
+
+[% INCLUDE footer.tt2 %]
+
